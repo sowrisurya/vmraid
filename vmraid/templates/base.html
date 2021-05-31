@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- Built on VMRaid. https://vmraidframework.com/ -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="vmraid">
+
+	{% block meta_block %}
+		{% include "templates/includes/meta_block.html" %}
+	{% endblock %}
+
+	<title>{% block title %}{{ title | striptags }}{% endblock %}</title>
+
+	{% block favicon %}
+	<link
+		rel="shortcut icon"
+		href="{{ (favicon or "/assets/vmraid/images/vmraid-favicon.svg") | abs_url }}"
+		type="image/x-icon"
+	>
+	{% endblock %}
+
+	<link rel="canonical" href="{{ canonical }}">
+
+	{%- block head -%}
+		{% if head_html is defined -%}
+		{{ head_html or "" }}
+		{%- endif %}
+
+		{%- if theme.name != 'Standard' -%}
+		<link type="text/css" rel="stylesheet" href="{{ theme.theme_url }}">
+		{%- else -%}
+		{{ include_style('website.bundle.css') }}
+		{%- endif -%}
+
+		{%- for link in web_include_css %}
+		{{ include_style(link) }}
+		{%- endfor -%}
+	{%- endblock -%}
+
+	{%- block head_include %}
+		{{ head_include or "" }}
+	{% endblock -%}
+
+	{%- block style %}
+		{% if colocated_css -%}
+			<style>{{ colocated_css }}</style>
+		{%- endif %}
+	{%- endblock -%}
+
+	<script>
+		window.vmraid = {};
+		vmraid.ready_events = [];
+		vmraid.ready = function(fn) {
+			vmraid.ready_events.push(fn);
+		}
+		window.dev_server = {{ dev_server }};
+		window.socketio_port = {{ (vmraid.socketio_port or 'null') }};
+		window.show_language_picker = {{ show_language_picker or 'false' }};
+		window.is_chat_enabled = {{ chat_enable }};
+	</script>
+</head>
+<body vmraid-session-status="{{ 'logged-in' if vmraid.session.user != 'Guest' else 'logged-out'}}" data-path="{{ path | e }}" {%- if template and template.endswith('.md') %} vmraid-content-type="markdown" {%- endif %} class="{{ body_class or ''}}">
+	{% include "public/icons/timeless/symbol-defs.svg" %}
+	{%- block banner -%}
+		{% include "templates/includes/banner_extension.html" ignore missing %}
+
+		{% if banner_html -%}
+		{{ banner_html or "" }}
+		{%- endif %}
+	{%- endblock -%}
+
+	{%- block navbar -%}
+		{{ web_block(
+			navbar_template or 'Standard Navbar',
+			values=_context_dict,
+			add_container=0,
+			add_top_padding=0,
+			add_bottom_padding=0,
+		) }}
+	{%- endblock -%}
+
+	{% block content %}
+		{{ content }}
+	{% endblock %}
+
+	{%- block footer -%}
+		{{ web_block(
+			footer_template or 'Standard Footer',
+			values=_context_dict,
+			add_container=0,
+			add_top_padding=0,
+			add_bottom_padding=0
+		) }}
+	{%- endblock -%}
+
+	{% block base_scripts %}
+	<!-- js should be loaded in body! -->
+	{{ include_script('vmraid-web.bundle.js') }}
+	{% endblock %}
+
+	{%- for link in web_include_js %}
+	{{ include_script(link) }}
+	{%- endfor -%}
+
+	{%- block script %}
+		{% if colocated_js -%}
+			<script>{{ colocated_js }}</script>
+		{%- endif %}
+	{%- endblock %}
+	<!-- csrf_token -->
+	{%- block body_include %}{{ body_include or "" }}{% endblock -%}
+</body>
+</html>

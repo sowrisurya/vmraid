@@ -1,0 +1,29 @@
+rules:
+- id: vmraid-codeinjection-eval
+  patterns:
+  - pattern-not: eval("...")
+  - pattern: eval(...)
+  message: |
+    Detected the use of eval(). eval() can be dangerous if used to evaluate
+    dynamic content. Avoid it or use safe_eval().
+  languages: [python]
+  severity: ERROR
+  paths:
+    exclude:
+      - vmraid/__init__.py
+      - vmraid/commands/utils.py
+
+- id: vmraid-sqli-format-strings
+  patterns:
+    - pattern-inside: |
+        @vmraid.whitelist()
+        def $FUNC(...):
+            ...
+    - pattern-either:
+        - pattern: vmraid.db.sql("..." % ...)
+        - pattern: vmraid.db.sql(f"...", ...)
+        - pattern: vmraid.db.sql("...".format(...), ...)
+  message: |
+      Detected use of raw string formatting for SQL queries. This can lead to sql injection vulnerabilities. Refer security guidelines - https://github.com/vmraid/erpadda/wiki/Code-Security-Guidelines
+  languages: [python]
+  severity: WARNING

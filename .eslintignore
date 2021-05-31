@@ -1,0 +1,8 @@
+vmraid/public/js/lib/*
+vmraid/public/js/vmraid/misc/tests/*
+vmraid/public/js/vmraid/views/test_runner.js
+vmraid/core/doctype/doctype/boilerplate/*
+vmraid/core/doctype/report/boilerplate/*
+vmraid/public/js/vmraid/class.js
+vmraid/templates/includes/*
+vmraid/www/website_script.js

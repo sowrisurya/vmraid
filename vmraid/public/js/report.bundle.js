@@ -1,0 +1,9 @@
+import "./lib/clusterize.min.js";
+import "./vmraid/views/reports/report_factory.js";
+import "./vmraid/views/reports/report_view.js";
+import "./vmraid/views/reports/query_report.js";
+import "./vmraid/views/reports/print_grid.html";
+import "./vmraid/views/reports/print_tree.html";
+import "./vmraid/ui/group_by/group_by.html";
+import "./vmraid/ui/group_by/group_by.js";
+import "./vmraid/views/reports/report_utils.js";

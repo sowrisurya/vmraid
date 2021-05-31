@@ -1,0 +1,9 @@
+{% if navbar_search %}
+	<li>
+		<form action='/search'>
+		<input name='q' class='form-control navbar-search' type='text'
+			value='{{ vmraid.form_dict.q or ''}}'
+			{% if not vmraid.form_dict.q%}placeholder="{{ _("Search...") }}"{% endif %}>
+		</form>
+	</li>
+{% endif %}

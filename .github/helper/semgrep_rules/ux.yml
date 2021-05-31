@@ -1,0 +1,15 @@
+rules:
+- id: vmraid-missing-translate-function
+  pattern-either:
+  - patterns:
+      - pattern: vmraid.msgprint("...", ...)
+      - pattern-not: vmraid.msgprint(_("..."), ...)
+      - pattern-not: vmraid.msgprint(__("..."), ...)
+  - patterns:
+      - pattern: vmraid.throw("...", ...)
+      - pattern-not: vmraid.throw(_("..."), ...)
+      - pattern-not: vmraid.throw(__("..."), ...)
+  message: |
+      All user facing text must be wrapped in translate function. Please refer to translation documentation. https://vmraidframework.com/docs/user/en/guides/basics/translations
+  languages: [python, javascript, json]
+  severity: ERROR
